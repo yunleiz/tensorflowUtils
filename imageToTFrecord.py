@@ -48,26 +48,6 @@ class ImageCoder(object):
     return image
 
 
-def convert_to(image, label, name):
-    """Converts a dataset to tfrecords."""
-    rows = image.shape[1]
-    cols = image.shape[2]
-    depth = image.shape[3]
-
-    filename = os.path.join(FLAGS.directory, name + '.tfrecords')
-    print('Writing', filename)
-    writer = tf.python_io.TFRecordWriter(filename)
-    image_raw = image.tostring()
-    example = tf.train.Example(features=tf.train.Features(feature={
-        'height': _int64_feature(rows),
-        'width': _int64_feature(cols),
-        'depth': _int64_feature(depth),
-        'label': _bytes_feature(label),
-        'image_raw': _bytes_feature(image_raw)}))
-    writer.write(example.SerializeToString())
-    writer.close()
-
-
 def _convert_to_example(image_buffer, label, text, height, width):
   """Build an Example proto for an example.
 
